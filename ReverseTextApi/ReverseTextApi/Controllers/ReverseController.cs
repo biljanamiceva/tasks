@@ -11,7 +11,12 @@ namespace ReverseTextApi.Controllers
         [HttpPost]
         public IActionResult Reverse(ReverseRequest request)
         {
-            var reversed = ReverseService.ReverseString(request.Text);
+            string trimmedText = request.Text.Trim();
+            if (string.IsNullOrEmpty(trimmedText))
+            {
+                return BadRequest(new { error = "Text cannot be empty." });
+            }
+            var reversed = ReverseService.ReverseString(trimmedText);
 
             return Ok(new ReverseResponse { ReversedText = reversed });
         }
